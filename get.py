@@ -38,14 +38,17 @@ def deletar_cnaes():
     for atual_emp in empresas:
         count += 1
         cp = atual_emp[1]
-        cs_str = atual_emp[0]
-        cs = cs_str.split(',')
-        for m in cs:
-            if m in lista:
-                break
-            elif m == cs[-1] and cp not in lista:
-                cursor.execute(
-                    f"DELETE FROM estabelecimento WHERE cnae_fiscal_secundaria = '{cs_str}' AND cnae_fiscal = '{cp}'")
+        # cs_str = atual_emp[0]
+        # cs = cs_str.split(',')
+        # for m in cs:
+        #     if m in lista:
+        #         break
+        #     elif m == cs[-1] and cp not in lista:
+        #         cursor.execute(
+        #             f"DELETE FROM estabelecimento WHERE cnae_fiscal_secundaria = '{cs_str}' AND cnae_fiscal = '{cp}'")
+        if cp not in lista:
+            cursor.execute(
+                f"DELETE FROM estabelecimento WHERE cnae_fiscal = '{cp}'")
         print(count)
 
 
