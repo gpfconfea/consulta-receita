@@ -10,3 +10,4 @@
 > * Consulta automatizada de empresas no CFT;
 > * Visualização de dados de forma personalizada (tabelas e gráficos);
 > * Atualização de dados armazenados;
+> * Link de acesso RFB: http://200.152.38.155/CNPJ/
