@@ -1,5 +1,3 @@
-<!-- localicação dos dados abertos: http://200.152.38.155/CNPJ/ -->
-
 # CONFIA
 
 ## Requisitos de sistema
@@ -11,7 +9,7 @@
 |`Consultar CREAS`|Sim|Em produção
 |`Consultar CFT`|Sim|Em produção
 |`Exibir dados (tabelas e gráficos)`|Sim|Não iniciado
-|`Verificar data de atualização`|Sim|Não iniciado
+|`Verificar data de atualização`|Sim|Em produção
 |`Área de pesquisa de empresas`|Não|Não iniciado
 
 $~$
