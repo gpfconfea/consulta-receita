@@ -25,6 +25,12 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+*.zip
+*.tmp
+*.db
+*.db-journal
+*.exe
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
