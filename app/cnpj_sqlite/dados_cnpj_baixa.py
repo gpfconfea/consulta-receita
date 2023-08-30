@@ -22,7 +22,7 @@ def baixa():
     # local dos arquivos zipados da Receita
     pasta_compactados = r"dados-publicos-zip"
 
-    if len(glob.glob(os.path.join(pasta_compactados, '*.zip'))):
+    if len(glob.glob(os.path.join(f'app/cnpj_sqlite/{pasta_compactados}', '*.zip'))):
         print(
             f'Há arquivos zip na pasta {pasta_compactados}. Apague ou mova esses arquivos zip e tente novamente')
         sys.exit()
@@ -64,7 +64,7 @@ def baixa():
 
     for k, url in enumerate(lista):
         print('\n' + time.asctime() + f' - item {k}: ' + url)
-        wget.download(url, out=os.path.join(f'app/cnpj-sqlite/{pasta_compactados}',
+        wget.download(url, out=os.path.join(f'app/cnpj_sqlite/{pasta_compactados}',
                       os.path.split(url)[1]), bar=bar_progress)
 
     print('\n\n' + time.asctime() +

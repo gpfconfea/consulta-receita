@@ -33,7 +33,7 @@ def sqlite():
     pasta_compactados = r"dados-publicos-zip"
     pasta_saida = r"dados-publicos"  # esta pasta deve estar vazia.
 
-    cam = os.path.join(f'app/cnpj-sqlite/{pasta_saida}', 'cnpj.db')
+    cam = os.path.join(f'app/cnpj_sqlite/{pasta_saida}', 'cnpj.db')
     if os.path.exists(cam):
         input(
             f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
@@ -144,7 +144,7 @@ def sqlite():
     def carregaTipo(nome_tabela, tipo, colunas):
         # usando dask, bem mais rápido que pandas
         arquivos = list(glob.glob(os.path.join(
-            f'app/cnpj-sqlite/{pasta_saida}', '*' + tipo)))
+            f'app/cnpj_sqlite/{pasta_saida}', '*' + tipo)))
         for arq in arquivos:
             print(f'carregando: {arq=}')
             print('lendo csv ...', time.asctime())
