@@ -112,4 +112,4 @@ def baixa():
     '''
 
 
-baixa()
+# baixa()

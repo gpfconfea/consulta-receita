@@ -106,3 +106,6 @@ def cnae_sec():
         conn.execute('drop table if exists tmp_cnae')
         print('fim...', time.asctime())
         # dde.compute()
+
+
+# cnae_sec()

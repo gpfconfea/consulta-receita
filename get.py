@@ -52,4 +52,4 @@ def deletar_cnaes():
         print(count)
 
 
-deletar_cnaes()
+# deletar_cnaes()

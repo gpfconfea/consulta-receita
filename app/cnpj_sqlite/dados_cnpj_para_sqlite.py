@@ -30,8 +30,9 @@ def sqlite():
     # input('Data de referência da base dd/mm/aaaa: ')
     dataReferencia = 'xx/xx/2022'
     # local dos arquivos zipados da Receita
-    pasta_compactados = r"dados-publicos-zip"
-    pasta_saida = r"dados-publicos"  # esta pasta deve estar vazia.
+    pasta_compactados = r"app/cnpj-sqlite/dados-publicos-zip"
+    # esta pasta deve estar vazia.
+    pasta_saida = r"app/cnpj-sqlite/dados-publicos"
 
     cam = os.path.join(f'app/cnpj_sqlite/{pasta_saida}', 'cnpj.db')
     if os.path.exists(cam):
@@ -44,7 +45,7 @@ def sqlite():
     engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
 
     arquivos_zip = list(glob.glob(os.path.join(
-        f'app/cnpj-sqlite/{pasta_compactados}', r'*.zip')))
+        f'{pasta_compactados}', r'*.zip')))
 
     for arq in arquivos_zip:
         print(time.asctime(), 'descompactando ' + arq)
@@ -249,3 +250,6 @@ def sqlite():
         'SELECT COUNT(*) FROM socios').fetchone()[0])
 
     print('FIM!!!', time.asctime())
+
+
+sqlite()

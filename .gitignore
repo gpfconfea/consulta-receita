@@ -30,6 +30,10 @@ MANIFEST
 *.db
 *.db-journal
 *.exe
+*.CSV
+*.*CSV
+*.ESTABELE
+*.CSV.*
 
 
 # PyInstaller
