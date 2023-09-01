@@ -252,4 +252,4 @@ def sqlite():
     print('FIM!!!', time.asctime())
 
 
-sqlite()
+# sqlite()
