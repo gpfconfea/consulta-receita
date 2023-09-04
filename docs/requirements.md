@@ -9,7 +9,7 @@
 |`Consultar CREAS`|Sim|Em produção
 |`Consultar CFT`|Sim|Em produção
 |`Exibir dados (tabelas e gráficos)`|Sim|Não iniciado
-|`Verificar data de atualização`|Sim|Em produção
+|`Verificar data de atualização`|Sim|Pronto
 |`Área de pesquisa de empresas`|Não|Não iniciado
 
 $~$
