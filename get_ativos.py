@@ -18,22 +18,24 @@ CNAES_IG = tuple(CNAES_IG)
 
 def getAtivos():
     connection = sqlite3.connect(
-        "C:/Users/felipe.coelho/Documents/programms/cnpj-sqlite/dados-publicos/cnpj.db")
+        "app/cnpj_sqlite/dados-publicos/cnpj.db")
     cursor = connection.cursor()
     count = 0
     empresas = cursor.execute(
         f'''
-        SELECT * FROM estabelecimento WHERE situcao_cadastral = '02' AND cnae_fiscal IN {CNAES_ENG};
+        SELECT * FROM estabelecimento WHERE situacao_cadastral = '02' AND cnae_fiscal IN {CNAES_ENG};
              ''').fetchall()
+
     print(empresas)
 
 
 # getAtivos()
 
+
 def clear():
 
     connection = sqlite3.connect(
-        "C:/Users/felipe.coelho/Documents/programms/cnpj-sqlite/dados-publicos/cnpj.db")
+        "app/cnpj_sqlite/dados-publicos/cnpj.db")
     cursor = connection.cursor()
     count = 0
     empresas = cursor.execute(

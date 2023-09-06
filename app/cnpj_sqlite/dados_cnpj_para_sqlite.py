@@ -30,11 +30,11 @@ def sqlite():
     # input('Data de referência da base dd/mm/aaaa: ')
     dataReferencia = 'xx/xx/2022'
     # local dos arquivos zipados da Receita
-    pasta_compactados = r"app/cnpj-sqlite/dados-publicos-zip"
+    pasta_compactados = r"app/cnpj_sqlite/dados-publicos-zip"
     # esta pasta deve estar vazia.
-    pasta_saida = r"app/cnpj-sqlite/dados-publicos"
+    pasta_saida = r"app/cnpj_sqlite/dados-publicos"
 
-    cam = os.path.join(f'app/cnpj_sqlite/{pasta_saida}', 'cnpj.db')
+    cam = os.path.join(pasta_saida, 'cnpj.db')
     if os.path.exists(cam):
         input(
             f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
@@ -44,8 +44,7 @@ def sqlite():
 
     engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
 
-    arquivos_zip = list(glob.glob(os.path.join(
-        f'{pasta_compactados}', r'*.zip')))
+    arquivos_zip = list(glob.glob(os.path.join(pasta_compactados, r'*.zip')))
 
     for arq in arquivos_zip:
         print(time.asctime(), 'descompactando ' + arq)
@@ -144,8 +143,7 @@ def sqlite():
 
     def carregaTipo(nome_tabela, tipo, colunas):
         # usando dask, bem mais rápido que pandas
-        arquivos = list(glob.glob(os.path.join(
-            f'app/cnpj_sqlite/{pasta_saida}', '*' + tipo)))
+        arquivos = list(glob.glob(os.path.join(pasta_saida, '*' + tipo)))
         for arq in arquivos:
             print(f'carregando: {arq=}')
             print('lendo csv ...', time.asctime())
