@@ -8,6 +8,7 @@ e faz o download
 
 
 def baixa():
+    from datetime import datetime
     from bs4 import BeautifulSoup
     import requests
     import wget
@@ -66,6 +67,10 @@ def baixa():
         print('\n' + time.asctime() + f' - item {k}: ' + url)
         wget.download(url, out=os.path.join(f'app/cnpj_sqlite/{pasta_compactados}',
                       os.path.split(url)[1]), bar=bar_progress)
+
+    # Registra a data de realização dos downloads em um arquivo
+    with open('app/resources/log.txt', 'w') as f:
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     print('\n\n' + time.asctime() +
           f' Finalizou!!! Baixou {len(lista)} arquivos.')

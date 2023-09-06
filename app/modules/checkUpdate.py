@@ -1,9 +1,5 @@
-"""
-O código presente não é a versão final da função.
- utilizaremos a API de extração de dados para gerar
- a data da última extração, que será comparada com
- a data de atualização do site da receita federal.
- """
+# TODO: adicionar função para realizar as tarefas corretas necessárias de acordo com os arquivos locais
+# TODO: exibir notificações do sistema com as informações de atualizações
 
 
 from datetime import datetime
@@ -17,4 +13,27 @@ def checkUpdate():
     soup = BeautifulSoup(response.text, 'html.parser')
     last_update = soup.select('td')[7].text
     last_update = datetime.strptime(last_update, "%Y-%m-%d %H:%M ")
-    print(f'Última atualização de dados no site: {last_update}')
+
+    try:
+        with open('app/resources/log.txt', 'r') as file:
+            local_update = file.read()
+        local_update = datetime.strptime(local_update, "%Y-%m-%d %H:%M:%S")
+
+        if last_update > local_update:
+            print(
+                'Atualização de dados necessária.\n'
+                f'Data dos arquivos atualizads: {last_update}\n'
+                f'Data do último download: {local_update}'
+            )
+        else:
+            print(
+                'Os dados estão atualizados.\n'
+                f'Data dos arquivos atualizads: {last_update}\n'
+                f'Data do último download: {local_update}'
+            )
+    except:
+        print(
+            'Não foi possível verificar atualização.\n'
+            'Verifique se o arquivo `app/resources/log.txt` existe e contém a data de atualização.\n'
+        )
+        pass
