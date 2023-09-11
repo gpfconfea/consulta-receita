@@ -45,8 +45,6 @@ def clear():
     cursor = connection.cursor()
     count = 0
     empresas = cursor.execute(
-        "DELETE FROM estabelecimento WHERE situacao_cadastral != '02'")
-    empresas = cursor.execute(
         f'''
             DELETE FROM estabelecimento WHERE situacao_cadastral != '02' OR cnae_fiscal IN {CNAES_IG}''')
 
