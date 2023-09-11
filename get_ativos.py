@@ -16,20 +16,26 @@ for i in rawJsonIg['codes']:
 CNAES_IG = tuple(CNAES_IG)
 
 
-def getAtivos():
+def getAtivos(limit=0):
     connection = sqlite3.connect(
         "app/cnpj_sqlite/dados-publicos/cnpj.db")
     cursor = connection.cursor()
     count = 0
-    empresas = cursor.execute(
-        f'''
+    if limit == 0:
+        empresas = cursor.execute(
+            f'''
         SELECT * FROM estabelecimento WHERE situacao_cadastral = '02' AND cnae_fiscal IN {CNAES_ENG};
              ''').fetchall()
+    else:
+        empresas = cursor.execute(
+            f'''
+            SELECT * FROM estabelecimento WHERE situacao_cadastral = '02' AND cnae_fiscal IN {CNAES_ENG} LIMIT {limit};
+                ''').fetchall()
 
-    print(empresas)
+    return empresas
 
 
-# getAtivos()
+# print(getAtivos())
 
 
 def clear():
