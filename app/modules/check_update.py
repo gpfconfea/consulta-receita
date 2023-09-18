@@ -5,9 +5,12 @@
 from datetime import datetime
 from bs4 import BeautifulSoup
 import requests
+import os
 
 
 def checkUpdate():
+    print("Checking updates...\n")
+
     url = "http://200.152.38.155/CNPJ/"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -37,3 +40,6 @@ def checkUpdate():
             'Verifique se o arquivo `app/resources/log.txt` existe e contém a data de atualização.\n'
         )
         pass
+
+    input("\nPressione ENTER para continuar...")
+    os.system("cls")

@@ -70,7 +70,7 @@ def baixa():
 
     # Registra a data de realização dos downloads em um arquivo
     with open('app/resources/log.txt', 'w') as f:
-        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        f.write(datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
 
     print('\n\n' + time.asctime() +
           f' Finalizou!!! Baixou {len(lista)} arquivos.')

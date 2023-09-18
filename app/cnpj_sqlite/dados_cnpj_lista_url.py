@@ -14,17 +14,17 @@ def lista_url():
 
     page = requests.get(url)
     data = page.text
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, features='html.parser')
 
-    for link in soup.find_all('a'):
-        if str(link.get('href')).endswith('.zip'):
-            cam = link.get('href')
-            # if cam.startswith('http://http'):
-            #     cam = 'http://' + cam[len('http://http//'):]
-            if not cam.startswith('http'):
-                print(url+cam)
-            else:
-                print(cam)
+    # for link in soup.find_all('a'):
+    #     if str(link.get('href')).endswith('.zip'):
+    #         cam = link.get('href')
+    #         # if cam.startswith('http://http'):
+    #         #     cam = 'http://' + cam[len('http://http//'):]
+    #         if not cam.startswith('http'):
+    #             print(url+cam)
+    #         else:
+    #             print(cam)
 
     '''
     http://200.152.38.155/CNPJ/F.K03200$W.SIMPLES.CSV.D10814.zip
@@ -67,4 +67,4 @@ def lista_url():
     '''
 
 
-# lista_url()
+lista_url()
