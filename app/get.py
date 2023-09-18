@@ -34,15 +34,6 @@ def get_estabelecimentos_por_estado(uf, limit=0):
     return show
 
 
-estado = 'DF'
-df = pd.DataFrame(get_estabelecimentos_por_estado(estado, 10), columns=[
-'cnpj', 'nome_fantasia', 'situacao_cadastral', 'matriz_filial', 'data_inicio_atividades', 'cnae_fiscal', 'cnae_descricao',
-'codigo_natjuridica', 'desc_natjuridica', 'tipo_logradouro', 'logradouro', 'numero', 'complemento', 'bairro', 'cep',
-'municipio', 'uf', 'razao_social', 'opcao_simples', 'opcao_mei', 'porte_empresa', 'capital_social'])
-
-df.to_csv(f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
-
-
 def deletar_cnaes():
     connection = sqlite3.connect(
         "app\cnpj_sqlite\dados-publicos\cnpj.db")
@@ -51,5 +42,3 @@ def deletar_cnaes():
         f'''
         DELETE FROM cnae WHERE codigo IN {CNAES_IG};
             ''')
-
-get_estabelecimentos_por_estado('DF', 10)

@@ -11,7 +11,8 @@ def mainMenu():
         "(1) Baixar dados da Receita Federal\n"
         "(2) Excluir dados locais\n"
         "(3) Montar banco de dados SQLite\n"
-        "(4) Sair\n"
+        "(4) Extrair .CSV de cada estado\n"
+        "(0) Sair\n"
         "Sua resposta: "
     ))
     print("\n" + "".center(40, "*"))

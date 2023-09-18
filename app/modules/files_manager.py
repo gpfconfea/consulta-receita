@@ -1,5 +1,4 @@
 from modules.menus import confirmMenu
-import pandas as pd
 import os
 
 
