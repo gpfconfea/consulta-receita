@@ -37,6 +37,7 @@
             "matriz_filial",
             "data_inicio_atividades",
             "cnae_fiscal",
+            "cnae_fiscal_secundaria",
             "cnae_descricao",
             "codigo_natjuridica",
             "desc_natjuridica",

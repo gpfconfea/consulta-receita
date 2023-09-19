@@ -12,7 +12,7 @@ def get_estabelecimentos_por_estado(uf, limit=0):
     select = f'''
     SELECT cnpj, nome_fantasia, situacao_cadastral,
     matriz_filial, data_inicio_atividades, cnae_fiscal,
-    cnae.descricao as cnae_descricao,
+    cnae_fiscal_secundaria, cnae.descricao as cnae_descricao,
     natureza_juridica.codigo as codigo_natjuridica,
     natureza_juridica.descricao as desc_natjuridica,
     tipo_logradouro, logradouro, numero, complemento, bairro, cep,
