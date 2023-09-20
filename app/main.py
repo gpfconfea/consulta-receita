@@ -11,7 +11,7 @@ def runApp():
     if option == 1:
         lista_url()
         baixa()
-    
+
     elif option == 2:
         pastas = [
             os.path.join(os.path.dirname(__file__), 'cnpj_sqlite', 'dados-publicos'),
@@ -19,7 +19,7 @@ def runApp():
             os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')]
         for p in pastas:
             deleteFrom(p, ignore_types=['.txt', '.db'])
-    
+
     elif option == 3:
         sqlite()
         cnae_sec()
@@ -31,6 +31,7 @@ def runApp():
         for estado in ESTADOS:
             df = pd.DataFrame(get_estabelecimentos_por_estado(estado), columns=COLUNAS_CSV)
             df.to_csv(f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
+            del df
 
     elif option == 0:
         exit()
