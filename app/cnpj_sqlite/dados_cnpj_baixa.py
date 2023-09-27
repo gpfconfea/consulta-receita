@@ -46,8 +46,8 @@ def baixa():
                 lista.append(cam)
 
     resp = input(
-        f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (y/n)?')
-    if resp.lower() != 'y' and resp.lower() != 's':
+        f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (S/N)?')
+    if resp.lower() != 's':
         sys.exit()
 
     def bar_progress(current, total, width=80):
@@ -70,7 +70,7 @@ def baixa():
 
     # Registra a data de realização dos downloads em um arquivo
     with open('app/resources/log.txt', 'w') as f:
-        f.write(datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     print('\n\n' + time.asctime() +
           f' Finalizou!!! Baixou {len(lista)} arquivos.')
