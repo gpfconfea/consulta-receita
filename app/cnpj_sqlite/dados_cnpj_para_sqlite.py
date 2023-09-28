@@ -36,9 +36,11 @@ def sqlite():
 
     cam = os.path.join(pasta_saida, 'cnpj.db')
     if os.path.exists(cam):
-        input(
-            f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
-        sys.exit()
+        if input(f'O arquivo {cam} já existe. Deseja excluir agora? (S/N)').lower() != "s":
+            sys.exit()
+        else:
+            os.remove(cam)
+            print("Arquivo deletado. Continuando...\n")
 
     print('Início:', time.asctime())
 
@@ -50,6 +52,7 @@ def sqlite():
         print(time.asctime(), 'descompactando ' + arq)
         with zipfile.ZipFile(arq, 'r') as zip_ref:
             zip_ref.extractall(pasta_saida)
+        os.remove(arq)
 
     # carrega tabelas pequenas e indexa
     def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
