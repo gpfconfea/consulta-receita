@@ -32,6 +32,10 @@ este processo pode levar um tempo, Deseja continuar?'''
         baixa()
 
     elif option == 3:
+        sqlite()
+        cnae_sec()
+
+    elif option == 4:
         pastas = [
             os.path.join(os.path.dirname(__file__),
                          'cnpj_sqlite', 'dados-publicos'),
@@ -40,10 +44,6 @@ este processo pode levar um tempo, Deseja continuar?'''
             os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')]
         for p in pastas:
             deleteFrom(p, ignore_types=['.txt', '.db'])
-
-    elif option == 4:
-        sqlite()
-        cnae_sec()
 
     elif option == 5:
         LISTAS = pd.read_json("app/resources/listas.json")
