@@ -52,6 +52,8 @@ este processo pode levar um tempo, Deseja continuar?'''
         for estado in ESTADOS:
             df = pd.DataFrame(get_estabelecimentos_por_estado(
                 estado), columns=COLUNAS_CSV)
+            cnpjFormat(df)
+            defineColumns(df)
             df.to_csv(
                 f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
             del df

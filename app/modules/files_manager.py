@@ -27,3 +27,15 @@ def deleteFrom(path, ignore_types=[], force=False):
             print("Arquivos deletados.")
     else:
         print("Nenhum arquivo para ser deletado.")
+
+
+def defineColumns(DataFrame):
+    DataFrame["sitac_cft"] = ""
+    DataFrame["sit_cadastro_cft"] = ""
+    DataFrame["sitac_crea"] = ""
+    DataFrame["sit_cadastro_crea"] = ""
+
+
+def cnpjFormat(DataFrame):
+    DataFrame.cnpj = DataFrame.cnpj.astype(str).apply(lambda x: x.zfill(14))
+    DataFrame.cnpj = DataFrame.cnpj.apply(lambda x: f"{x[:2]}.{x[2:5]}.{x[5:8]}/{x[8:12]}-{x[12:]}")
