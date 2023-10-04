@@ -13,6 +13,7 @@ def mainMenu():
         "(3) Montar banco de dados SQLite\n"
         "(4) Excluir dados locais\n"
         "(5) Extrair .CSV de cada estado\n"
+        "(6) Gerar arquivo final .CSV com todos os estados\n"
         "(0) Sair\n"
         "Sua resposta: "
     ))

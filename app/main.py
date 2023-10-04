@@ -50,6 +50,7 @@ este processo pode levar um tempo, Deseja continuar?'''
         ESTADOS = LISTAS["listas"]["estados"]
         COLUNAS_CSV = LISTAS["listas"]["colunas_csv"]
         for estado in ESTADOS:
+            print(f"Gerando arquivo de {estado}...")
             df = pd.DataFrame(get_estabelecimentos_por_estado(
                 estado), columns=COLUNAS_CSV)
             cnpjFormat(df)
@@ -57,6 +58,22 @@ este processo pode levar um tempo, Deseja continuar?'''
             df.to_csv(
                 f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
             del df
+        os.system("cls")
+
+    elif option == 6:
+        path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
+        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv")]
+        df = pd.DataFrame()
+        for arquivo in arquivos:
+            print(f"Incluindo dados de {arquivo}...")
+            df1 = pd.read_csv(os.path.join(path, arquivo), sep=";", low_memory=False)
+            df = pd.concat([df, df1])
+            del df1
+            os.system("cls")
+        print("Salvando arquivo BRASIL.csv...")
+        df.to_csv(f"{path}/BRASIL.csv", sep=";", index=False)
+        os.system("cls")
+        print("Concluído!\n")
 
     elif option == 0:
         exit()
