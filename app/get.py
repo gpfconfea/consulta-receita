@@ -1,9 +1,18 @@
 import sqlite3
 from get_ativos import CNAES_ENG, CNAES_IG
 import pandas as pd
+import json
 
 
 def get_estabelecimentos_por_estado(uf, limit=0):
+
+    f = open('app/resources/cnaes_eng.json')
+    rawJsonEng = json.load(f)
+    CNAES_ENG = []
+    for i in rawJsonEng['codes']:
+        CNAES_ENG.append(i)
+    CNAES_ENG = tuple(CNAES_ENG)
+
     uf = uf.upper()
     connection = sqlite3.connect(
         "app\cnpj_sqlite\dados-publicos\cnpj.db")
@@ -24,7 +33,7 @@ def get_estabelecimentos_por_estado(uf, limit=0):
     JOIN cnae ON estabelecimento.cnae_fiscal = cnae.codigo
     JOIN natureza_juridica ON empresas.natureza_juridica = natureza_juridica.codigo
     JOIN simples ON estabelecimento.cnpj_basico = simples.cnpj_basico
-    WHERE situacao_cadastral = '02' AND uf = '{uf}';'''
+    WHERE situacao_cadastral = '02' AND uf = '{uf}' AND cnae_fiscal IN {CNAES_ENG};'''
 
     if limit == 0:
         show = cursor.execute(select).fetchall()
