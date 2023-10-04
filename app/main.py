@@ -1,3 +1,4 @@
+from modules.consultas import consulta_cft
 from modules.check_update import *
 from modules.files_manager import *
 from modules.menus import *
@@ -74,6 +75,14 @@ este processo pode levar um tempo, Deseja continuar?'''
         df.to_csv(f"{path}/BRASIL.csv", sep=";", index=False)
         os.system("cls")
         print("Concluído!\n")
+
+    elif option == 7:
+        path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
+        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv")]
+        for arquivo in arquivos:
+            df = consulta_cft.consulta(os.path.join(path, arquivo))
+            df.to_csv(f"{path}.csv", index=False, sep=";")
+            del df
 
     elif option == 0:
         exit()

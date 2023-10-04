@@ -14,6 +14,7 @@ def mainMenu():
         "(4) Excluir dados locais\n"
         "(5) Extrair .CSV de cada estado\n"
         "(6) Gerar arquivo final .CSV com todos os estados\n"
+        "(7) Extrair dados do CFT\n"
         "(0) Sair\n"
         "Sua resposta: "
     ))
