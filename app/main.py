@@ -59,7 +59,8 @@ este processo pode levar um tempo, Deseja continuar?'''
             df.to_csv(
                 f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
             del df
-        os.system("cls")
+            os.system("cls")
+        print("Concluído!\n")
 
     elif option == 6:
         path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
