@@ -55,13 +55,13 @@ def dataInicioAtividades(df):
 
 
 def formatCnaeFiscal(df):
-    cnae = lambda x: f"{x[:4]}-{x[4]}/{x[5:]}"
+    cnae = lambda x: f"{x[:5]}/{x[5:]}"
     df.cnae_fiscal = df.cnae_fiscal.astype(str).str.zfill(7)
     df.cnae_fiscal = df.cnae_fiscal.apply(cnae)
 
 
 def formatCep(df):
-    cep = lambda x: f"{x[:2]}.{x[2:6]}-{x[6:]}"
+    cep = lambda x: f"{x[:5]}-{x[5:]}"
     df.cep = df.cep.astype(str).str.zfill(8)
     df.cep = df.cep.apply(cep)
 
