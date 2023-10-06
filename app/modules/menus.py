@@ -11,10 +11,10 @@ def mainMenu():
         "(1) Baixar e montar banco de dados\n"
         "(2) Baixar dados da Receita Federal\n"
         "(3) Montar banco de dados SQLite\n"
-        "(4) Excluir dados locais\n"
-        "(5) Extrair .CSV de cada estado\n"
+        "(4) Extrair .CSV de cada estado\n"
+        "(5) Extrair dados do CFT\n"
         "(6) Gerar arquivo final .CSV com todos os estados\n"
-        "(7) Extrair dados do CFT\n"
+        "(7) Excluir dados locais\n"
         "(0) Sair\n"
         "Sua resposta: "
     ))
