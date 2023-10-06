@@ -1,4 +1,5 @@
 from modules.menus import confirmMenu
+import pandas as pd
 import os
 
 
@@ -51,7 +52,7 @@ def formatCnpj(df):
 def dataInicioAtividades(df):
     date = lambda x: f"{x[:4]}-{x[4:6]}-{x[6:8]}"
     df.data_inicio_atividades = df.data_inicio_atividades.astype(str).apply(date)
-    df.data_inicio_atividades = df.to_datetime(df.data_inicio_atividades)
+    df.data_inicio_atividades = pd.to_datetime(df.data_inicio_atividades)
 
 
 def formatCnaeFiscal(df):
