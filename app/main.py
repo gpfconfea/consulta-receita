@@ -16,8 +16,10 @@ este processo pode levar um tempo, Deseja continuar?'''
         )
         if ans == True:
             pastas = [
-                os.path.join(os.path.dirname(__file__), 'cnpj_sqlite', 'dados-publicos'),
-                os.path.join(os.path.dirname(__file__), 'cnpj_sqlite', 'dados-publicos-zip'),
+                os.path.join(os.path.dirname(__file__),
+                             'cnpj_sqlite', 'dados-publicos'),
+                os.path.join(os.path.dirname(__file__),
+                             'cnpj_sqlite', 'dados-publicos-zip'),
                 os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')]
             for p in pastas:
                 deleteFrom(p, ignore_types=['.txt'])
@@ -40,28 +42,34 @@ este processo pode levar um tempo, Deseja continuar?'''
         COLUNAS_CSV = LISTAS["listas"]["colunas_csv"]
         for estado in ESTADOS:
             print(f"Gerando arquivo de {estado}...")
-            df = pd.DataFrame(get_estabelecimentos_por_estado(estado), columns=COLUNAS_CSV)
+            df = pd.DataFrame(get_estabelecimentos_por_estado(
+                estado), columns=COLUNAS_CSV)
             formatDataFrame(df)
-            df.to_csv(f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
+            df.to_csv(
+                f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
             del df
             os.system("cls")
         print("Concluído!\n")
 
     elif option == 5:
+        ignore = ["BRASIL.csv"]
         path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
-        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv")]
+        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv") and not arquivo in ignore]
         for arquivo in arquivos:
             df = consulta_cft.consulta(os.path.join(path, arquivo))
             df.to_csv(f"{path}.csv", index=False, sep=";")
             del df
 
     elif option == 6:
-        path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
-        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv")]
+        path = os.path.join(os.path.dirname(__file__),
+                            'resources', 'estados_csv')
+        arquivos = [arquivo for arquivo in os.listdir(
+            path) if arquivo.endswith(".csv")]
         df = pd.DataFrame()
         for arquivo in arquivos:
             print(f"Incluindo dados de {arquivo}...")
-            df1 = pd.read_csv(os.path.join(path, arquivo), sep=";", low_memory=False)
+            df1 = pd.read_csv(os.path.join(path, arquivo),
+                              sep=";", low_memory=False)
             df = pd.concat([df, df1])
             del df1
             os.system("cls")
@@ -72,8 +80,10 @@ este processo pode levar um tempo, Deseja continuar?'''
 
     elif option == 7:
         pastas = [
-            os.path.join(os.path.dirname(__file__), 'cnpj_sqlite', 'dados-publicos'),
-            os.path.join(os.path.dirname(__file__), 'cnpj_sqlite', 'dados-publicos-zip'),
+            os.path.join(os.path.dirname(__file__),
+                         'cnpj_sqlite', 'dados-publicos'),
+            os.path.join(os.path.dirname(__file__),
+                         'cnpj_sqlite', 'dados-publicos-zip'),
             os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')]
         for p in pastas:
             deleteFrom(p, ignore_types=['.txt', '.db'])
