@@ -57,7 +57,7 @@ este processo pode levar um tempo, Deseja continuar?'''
         arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv") and not arquivo in ignore]
         for arquivo in arquivos:
             df = consulta_cft.consulta(os.path.join(path, arquivo))
-            df.to_csv(f"{path}.csv", index=False, sep=";")
+            df.to_csv(os.path.join(path, arquivo), index=False, sep=";")
             del df
 
     elif option == 6:
