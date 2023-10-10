@@ -54,9 +54,9 @@ def consulta(arquivo_csv):
     progresso = 0
 
     # Executar as buscas percorrendo a planilha
-    for i in range(len(df)):
-        if pd.isna(df['sitac_cft'][i]) and pd.isna(df['sit_cadastro_cft'][i]):
-            atualiza_campo_cnpj(i)
+    for row, col in df.iterrows():
+        if pd.isna(df['sitac_cft'][row]) and pd.isna(df['sit_cadastro_cft'][row]):
+            atualiza_campo_cnpj(row)
             pesquisa()
 
             while carregando() or reCaptcha():
@@ -66,10 +66,7 @@ def consulta(arquivo_csv):
                 else:
                     time.sleep(0.025)
 
-            captura_resultado_pesquisa(i)
-            progresso += (1/len(df)) * 100
-            # Exibe o progresso com 1 casa decimal
-            print(f'Progresso: {progresso:.1f}%\n')
+            captura_resultado_pesquisa(row)
             system('cls')
 
     return df
