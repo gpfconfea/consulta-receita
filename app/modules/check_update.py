@@ -25,7 +25,7 @@ def checkUpdate():
         if last_update > local_update:
             print(
                 'Atualização de dados necessária.\n'
-                f'Data dos arquivos atualizads: {last_update}\n'
+                f'Data dos arquivos atualizados: {last_update}\n'
                 f'Data do último download: {local_update}'
             )
         else:
