@@ -1,4 +1,4 @@
-from modules.consultas import consulta_cft
+from modules.consultas import *
 from modules.check_update import *
 from modules.files_manager import *
 from modules.menus import *
@@ -56,7 +56,7 @@ este processo pode levar um tempo, Deseja continuar?'''
         path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
         arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv") and not arquivo in ignore]
         for arquivo in arquivos:
-            df = consulta_cft.consulta(os.path.join(path, arquivo))
+            df = consulta_cft(os.path.join(path, arquivo))
             df.to_csv(os.path.join(path, arquivo), index=False, sep=";")
             del df
 

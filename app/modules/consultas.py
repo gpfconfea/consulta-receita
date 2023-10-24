@@ -5,7 +5,7 @@ import pandas as pd
 import time
 
 
-def consulta(arquivo_csv):
+def consulta_cft(arquivo_csv):
     url = 'https://corporativo.sinceti.net.br/app/view/sight/externo.php?form=PesquisarProfissionalEmpresa'
     df = pd.read_csv(arquivo_csv, sep=";", low_memory=True)
 
