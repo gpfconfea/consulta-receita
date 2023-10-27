@@ -79,6 +79,11 @@ este processo pode levar um tempo, Deseja continuar?'''
         print("Concluído!\n")
 
     elif option == 7:
+        path = os.path.join(os.path.dirname(__file__),
+                            'resources', 'estados_csv')
+        filtrar_cnae(input("Digte o cnae desejado: "), f"{path}/BRASIL.csv")
+
+    elif option == 8:
         pastas = [
             os.path.join(os.path.dirname(__file__),
                          'cnpj_sqlite', 'dados-publicos'),
