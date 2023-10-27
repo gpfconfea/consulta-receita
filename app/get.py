@@ -51,3 +51,10 @@ def deletar_cnaes():
         f'''
         DELETE FROM cnae WHERE codigo IN {CNAES_IG};
             ''')
+
+
+def filtrar_cnae(codigo_cnae, arquivo_csv):
+    cnae_formatado = f"{codigo_cnae[:-2]}/{codigo_cnae[-2:]}"
+    df = pd.read_csv(arquivo_csv, sep=";", low_memory=False)
+    df = df.loc[df['cnae_fiscal'] == cnae_formatado]
+    df.to_csv(f"{arquivo_csv[:-4]}_{codigo_cnae}.csv", sep=";", index=False)
