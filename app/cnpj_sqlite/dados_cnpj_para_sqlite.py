@@ -18,6 +18,7 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 
 
 def sqlite():
+    from sqlalchemy import text
     import pandas as pd
     import sqlalchemy
     import glob
@@ -62,8 +63,10 @@ def sqlite():
         dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1',
                            header=None, names=['codigo', 'descricao'])
         dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
-        engine.execute(
-            f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
+        with engine.begin() as conn:
+            conn.execute(
+                text(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
+            )
 
     carregaTabelaCodigo('.CNAECSV', 'cnae')
     carregaTabelaCodigo('.MOTICSV', 'motivo')

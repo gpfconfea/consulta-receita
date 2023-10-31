@@ -42,8 +42,8 @@ este processo pode levar um tempo, Deseja continuar?'''
         COLUNAS_CSV = LISTAS["listas"]["colunas_csv"]
         for estado in ESTADOS:
             print(f"Gerando arquivo de {estado}...")
-            df = pd.DataFrame(get_estabelecimentos_por_estado(
-                estado), columns=COLUNAS_CSV)
+            show = get_estabelecimentos_por_estado(estado)
+            df = pd.DataFrame(show, columns=COLUNAS_CSV)
             formatDataFrame(df)
             df.to_csv(
                 f"app/resources/estados_csv/{estado}.csv", index=False, sep=";")
@@ -53,8 +53,10 @@ este processo pode levar um tempo, Deseja continuar?'''
 
     elif option == 5:
         ignore = ["BRASIL.csv"]
-        path = os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')
-        arquivos = [arquivo for arquivo in os.listdir(path) if arquivo.endswith(".csv") and not arquivo in ignore]
+        path = os.path.join(os.path.dirname(__file__),
+                            'resources', 'estados_csv')
+        arquivos = [arquivo for arquivo in os.listdir(
+            path) if arquivo.endswith(".csv") and not arquivo in ignore]
         for arquivo in arquivos:
             df = consulta_cft.consulta(os.path.join(path, arquivo))
             df.to_csv(os.path.join(path, arquivo), index=False, sep=";")
@@ -86,7 +88,7 @@ este processo pode levar um tempo, Deseja continuar?'''
                          'cnpj_sqlite', 'dados-publicos-zip'),
             os.path.join(os.path.dirname(__file__), 'resources', 'estados_csv')]
         for p in pastas:
-            deleteFrom(p, ignore_types=['.txt', '.db'])
+            deleteFrom(p, ignore_types=['.txt', '.db', '.db-journal'])
 
     elif option == 0:
         exit()
