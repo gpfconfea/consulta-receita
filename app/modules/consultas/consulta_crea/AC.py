@@ -82,8 +82,9 @@ def AC():
             print('***************************************** \n')
 
     # Gerar novo arquivo com os resultados
-    arquivo.to_csv('app/resources/estados_csv/AC.csv', sep=";", index=False)
+    arquivo.to_csv(
+        'app/resources/estados_csv/AC.csv', sep=";", index=False)
     driver.quit()
 
 
-AC()
+# AC()
