@@ -40,6 +40,7 @@ def addSitacColumns(df):
     df["sit_cadastro_cft"] = ""
     df["sitac_crea"] = ""
     df["sit_cadastro_crea"] = ""
+    df["enquadrado_simei"] = ""
 
 
 def formatCnpj(df):
