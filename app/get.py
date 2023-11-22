@@ -29,6 +29,7 @@ def get_estabelecimentos_por_estado(uf, limit=0):
 	cep,
 	municipio.descricao as municipio,
 	uf,
+    correio_eletronico,
 	razao_social,
 	opcao_simples,
 	opcao_mei,
@@ -57,7 +58,6 @@ WHERE
         show = cursor.execute(
             f"{select[:-1]} LIMIT {limit};").fetchall()
     return show
-
 
 
 def deletar_cnaes():
