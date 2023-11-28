@@ -49,6 +49,7 @@
             "cep",
             "municipio",
             "uf",
+            "correio_eletronico",
             "razao_social",
             "opcao_simples",
             "opcao_mei",
