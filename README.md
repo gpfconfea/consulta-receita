@@ -1,4 +1,4 @@
-# CONFIA
+# Consulta de dados da Receita Federal
 
 ## Software de gerenciamento de dados abertos de empresas, adaptados para as demandas do setor de fiscalização do CONFEA. Uso exclusivo do CONFEA
 
