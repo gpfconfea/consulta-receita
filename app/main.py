@@ -66,7 +66,7 @@ este processo pode levar um tempo, Deseja continuar?'''
         path = os.path.join(os.path.dirname(__file__),
                             'resources', 'estados_csv')
         arquivos = [arquivo for arquivo in os.listdir(
-            path) if arquivo.endswith(".csv")]
+            path) if (arquivo.endswith(".csv") and "BRASIL" not in arquivo)]
         df = pd.DataFrame()
         for arquivo in arquivos:
             print(f"Incluindo dados de {arquivo}...")
