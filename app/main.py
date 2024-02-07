@@ -52,7 +52,7 @@ este processo pode levar um tempo, Deseja continuar?'''
         print("Concluído!\n")
 
     elif option == 5:
-        ignore = ["BRASIL.csv"]
+        ignore = ["BRASIL.csv", "BRASIL.parquet"]
         path = os.path.join(os.path.dirname(__file__),
                             'resources', 'estados_csv')
         arquivos = [arquivo for arquivo in os.listdir(
@@ -75,8 +75,8 @@ este processo pode levar um tempo, Deseja continuar?'''
             df = pd.concat([df, df1])
             del df1
             os.system("cls")
-        print("Salvando arquivo BRASIL.csv...")
-        df.to_csv(f"{path}/BRASIL.csv", sep=";", index=False)
+        print("Salvando arquivo BRASIL.parquet...")
+        df.to_parquet(f"{path}/BRASIL.parquet", index=False)
         os.system("cls")
         print("Concluído!\n")
 

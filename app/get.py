@@ -75,3 +75,13 @@ def filtrar_cnae(codigo_cnae, arquivo_csv):
     df = pd.read_csv(arquivo_csv, sep=";", low_memory=False)
     df = df.loc[df['cnae_fiscal'] == cnae_formatado]
     df.to_csv(f"{arquivo_csv[:-4]}_{codigo_cnae}.csv", sep=";", index=False)
+
+
+def convertTypes(df):
+    df['situacao_cadastral'] = df['situacao_cadastral'].astype('category')
+    df['cnae_fiscal'] = df['cnae_fiscal'].astype('category')
+    df['porte_empresa'] = df['porte_empresa'].astype('category')
+    df['uf'] = df['uf'].astype('category')
+    df['opcao_simples'] = df['opcao_simples'].astype('category')
+    df['opcao_mei'] = df['opcao_mei'].astype('category')
+    return df

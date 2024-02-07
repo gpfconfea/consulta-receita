@@ -1,4 +1,5 @@
 from modules.menus import confirmMenu
+from get import convertTypes
 import pandas as pd
 import os
 
@@ -72,6 +73,7 @@ def formatCep(df):
 
 
 def formatDataFrame(df):
+    df = convertTypes(df)
     formatCep(df)
     formatCnpj(df)
     formatCnaeFiscal(df)
