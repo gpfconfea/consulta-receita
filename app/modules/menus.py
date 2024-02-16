@@ -13,7 +13,7 @@ def mainMenu():
         "(3) Montar banco de dados SQLite\n"
         "(4) Extrair .CSV de cada estado\n"
         "(5) Extrair dados do CFT\n"
-        "(6) Gerar arquivo final .CSV com todos os estados\n"
+        "(6) Gerar arquivo final .PARQUET com todos os estados\n"
         "(7) Filtrar cnae específico\n"
         "(8) Excluir dados locais\n"
         "(0) Sair\n"

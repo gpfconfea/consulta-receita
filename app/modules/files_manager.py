@@ -57,7 +57,8 @@ def dataInicioAtividades(df):
     def date(x): return f"{x[:4]}-{x[4:6]}-{x[6:8]}"
     df.data_inicio_atividades = df.data_inicio_atividades.astype(
         str).apply(date)
-    df.data_inicio_atividades = pd.to_datetime(df.data_inicio_atividades)
+    # df.data_inicio_atividades = pd.to_datetime(
+    #     df.data_inicio_atividades, errors='ignore')
 
 
 def formatCnaeFiscal(df):

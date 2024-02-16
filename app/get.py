@@ -45,7 +45,7 @@ JOIN cnae ON
 	estabelecimento.cnae_fiscal = cnae.codigo
 JOIN natureza_juridica ON
 	empresas.natureza_juridica = natureza_juridica.codigo
-JOIN simples ON
+LEFT JOIN simples ON
 	estabelecimento.cnpj_basico = simples.cnpj_basico
 WHERE
 	situacao_cadastral = '02'
