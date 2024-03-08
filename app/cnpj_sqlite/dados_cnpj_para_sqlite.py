@@ -18,8 +18,8 @@ A utilização da biblioteca DASK tem desempenho melhor do que o uso de PANDAS (
 
 
 def sqlite():
-    from sqlalchemy import text
     import pandas as pd
+    import sqlite3
     import sqlalchemy
     import glob
     import time
@@ -29,7 +29,7 @@ def sqlite():
     import zipfile
 
     # input('Data de referência da base dd/mm/aaaa: ')
-    dataReferencia = 'xx/xx/2022'
+    dataReferencia = 'xx/xx/2024'
     # local dos arquivos zipados da Receita
     pasta_compactados = r"app/cnpj_sqlite/dados-publicos-zip"
     # esta pasta deve estar vazia.
@@ -37,15 +37,14 @@ def sqlite():
 
     cam = os.path.join(pasta_saida, 'cnpj.db')
     if os.path.exists(cam):
-        if input(f'O arquivo {cam} já existe. Deseja excluir agora? (S/N)').lower() != "s":
-            sys.exit()
-        else:
-            os.remove(cam)
-            print("Arquivo deletado. Continuando...\n")
+        input(
+            f'O arquivo {cam} já existe. Apague-o primeiro e rode este script novamente.')
+        sys.exit()
 
     print('Início:', time.asctime())
 
-    engine = sqlalchemy.create_engine(f'sqlite:///{cam}')
+    engine = sqlite3.connect(cam)
+    engine_url = f'sqlite:///{cam}'
 
     arquivos_zip = list(glob.glob(os.path.join(pasta_compactados, r'*.zip')))
 
@@ -53,7 +52,6 @@ def sqlite():
         print(time.asctime(), 'descompactando ' + arq)
         with zipfile.ZipFile(arq, 'r') as zip_ref:
             zip_ref.extractall(pasta_saida)
-        os.remove(arq)
 
     # carrega tabelas pequenas e indexa
     def carregaTabelaCodigo(extensaoArquivo, nomeTabela):
@@ -63,10 +61,8 @@ def sqlite():
         dtab = pd.read_csv(arquivo, dtype=str, sep=';', encoding='latin1',
                            header=None, names=['codigo', 'descricao'])
         dtab.to_sql(nomeTabela, engine, if_exists='replace', index=None)
-        with engine.begin() as conn:
-            conn.execute(
-                text(f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
-            )
+        engine.execute(
+            f'CREATE INDEX idx_{nomeTabela} ON {nomeTabela}(codigo);')
 
     carregaTabelaCodigo('.CNAECSV', 'cnae')
     carregaTabelaCodigo('.MOTICSV', 'motivo')
@@ -157,7 +153,7 @@ def sqlite():
                               encoding='latin1', dtype=str, na_filter=None)
             # dask possibilita usar curinga no nome de arquivo, por ex:
             # ddf = dd.read_csv(pasta_saida+r'\*' + tipo, sep=';', header=None, names=colunas ...
-            ddf.to_sql(nome_tabela, str(engine.url), index=None,
+            ddf.to_sql(nome_tabela, engine_url, index=None,
                        if_exists='append', dtype=sqlalchemy.sql.sqltypes.TEXT)
             print('fim parcial...', time.asctime())
 
@@ -228,9 +224,9 @@ def sqlite():
     engine.execute(
         f"insert into _referencia (referencia, valor) values ('cnpj_qtde', '{qtde_cnpjs}')")
 
-    print('Aplicando VACUUM para diminuir o tamanho da base--------------------------------', time.ctime())
-    engine.execute('VACUUM')
-    print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
+    # print('Aplicando VACUUM para diminuir o tamanho da base--------------------------------', time.ctime())
+    # engine.execute('VACUUM')
+    # print('Aplicando VACUUM-FIM-------------------------------', time.ctime())
 
     # print('compactando... ', time.ctime())
     # with zipfile.ZipFile(cam + '.7z', 'w',  zipfile.ZIP_DEFLATED) as zipf:
@@ -253,6 +249,8 @@ def sqlite():
     print('Qtde de sócios:', engine.execute(
         'SELECT COUNT(*) FROM socios').fetchone()[0])
 
+    engine.commit()
+    engine.close()
     print('FIM!!!', time.asctime())
 
 

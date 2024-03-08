@@ -8,7 +8,6 @@ e faz o download
 
 
 def baixa():
-    from datetime import datetime
     from bs4 import BeautifulSoup
     import requests
     import wget
@@ -21,9 +20,9 @@ def baixa():
     url = 'http://200.152.38.155/CNPJ/'
 
     # local dos arquivos zipados da Receita
-    pasta_compactados = r"dados-publicos-zip"
+    pasta_compactados = r"app/cnpj_sqlite/dados-publicos-zip"
 
-    if len(glob.glob(os.path.join(f'app/cnpj_sqlite/{pasta_compactados}', '*.zip'))):
+    if len(glob.glob(os.path.join(pasta_compactados, '*.zip'))):
         print(
             f'Há arquivos zip na pasta {pasta_compactados}. Apague ou mova esses arquivos zip e tente novamente')
         sys.exit()
@@ -46,8 +45,8 @@ def baixa():
                 lista.append(cam)
 
     resp = input(
-        f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (S/N)?')
-    if resp.lower() != 's':
+        f'Deseja baixar os arquivos acima para a pasta {pasta_compactados} (s/n)?')
+    if resp.lower() != 'y' and resp.lower() != 's':
         sys.exit()
 
     def bar_progress(current, total, width=80):
@@ -65,12 +64,8 @@ def baixa():
 
     for k, url in enumerate(lista):
         print('\n' + time.asctime() + f' - item {k}: ' + url)
-        wget.download(url, out=os.path.join(f'app/cnpj_sqlite/{pasta_compactados}',
+        wget.download(url, out=os.path.join(pasta_compactados,
                       os.path.split(url)[1]), bar=bar_progress)
-
-    # Registra a data de realização dos downloads em um arquivo
-    with open('app/resources/log.txt', 'w') as f:
-        f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     print('\n\n' + time.asctime() +
           f' Finalizou!!! Baixou {len(lista)} arquivos.')
