@@ -7,17 +7,22 @@ import time
 def AP():
     # Configurações do arquivo utilizado
     arquivo = pd.read_csv('app/resources/estados_csv/AP.csv', sep=";")
-    arquivo_destino = pd.read_csv('app/resources/sitac_csv/AP.csv', sep=";")
+    arquivo_destino = pd.DataFrame()
+    
 
     # Configurações da página de pesquisa
     driver = webdriver.Edge()
     driver.get(
         'https://crea-ap.sitac.com.br/app/view/sight/externo?form=PesquisarProfissionalEmpresa')
 
+    if 'Verificação' in driver.page_source:
+        input("Por favor, resolva o reCAPTCHA manualmente. Pressione Enter quando terminar.")
+        time.sleep(10) 
+
     # Aguardand resolver o captcha
-    while 'Verificação' in driver.page_source:
+    '''while 'Verificação' in driver.page_source:
         time.sleep(2)
-    time.sleep(2)
+    time.sleep(2)'''
 
     driver.find_element(By.ID, "PJ").click()
     campo_cnpj = driver.find_element(By.ID, "CNPJ")
@@ -38,8 +43,9 @@ def AP():
         """ Verifica se está carregando os resultados da busca """
         return driver.execute_script(
             "return document.body.innerText.includes('Carregando')")
+        
 
-    def reCaptcha():
+    '''def reCaptcha():
         """ Verifica se houve erro de reCAPTCHA """
         return driver.execute_script(
             "return document.body.innerText.includes('reCAPTCHA inválido')"
@@ -49,11 +55,13 @@ def AP():
         driver.back()
         time.sleep(0.05)
         driver.forward()
-        time.sleep(0.1)
+        time.sleep(0.1)'''
 
     def captura_resultado_pesquisa(i):
         """ Captura o resultado da busca e atualiza na planilha """
-
+        while carregando() == True:
+             print('Carregando...')
+             time.sleep(0.2)
         if not 'Situação do Registro' in driver.page_source:
             print('Nada localizado')
             colunaSITAC[i] = 'Sem registro'
@@ -86,31 +94,32 @@ def AP():
                 arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
                 arquivo_destino.to_csv(
                     'app/resources/sitac_csv/AP.csv', sep=";", index=False)
-            resetar_pagina()
+            #resetar_pagina()
             driver.find_element(By.ID, "PJ").click()
             campo_cnpj = driver.find_element(By.ID, "CNPJ")
             botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
             pesquisa(i)
 
-            while carregando() or reCaptcha():
+            '''while carregando() or reCaptcha():
                 if reCaptcha():
                     print('reCaptcha inválido!')
                     botao_pesquisa.click()
                     time.sleep(0.2)
                 else:
                     print('Carregando...')
-                    time.sleep(0.2)
+                    time.sleep(0.2)'''
 
             captura_resultado_pesquisa(i)
             print('*****************************************\n')
 
     # Gerar novo arquivo com os resultados
-    arquivo_destino['cnpj'] = pd.DataFrame(colunaCNPJ)
-    arquivo_destino['sit_cadastro_crea'] = pd.DataFrame(colunaSituacao)
-    arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
-    arquivo_destino.to_csv(
+    arquivo_destino = arquivo_destino.drop(columns=['cnpj'])
+    arquivo = arquivo.drop(columns=['sitac_crea', 'sit_cadastro_crea'])
+    arquivo_final = pd.concat([arquivo, arquivo_destino], axis=1)
+    arquivo_final.to_csv(
         'app/resources/sitac_csv/AP.csv', sep=";", index=False)
+    print("\nConsulta Finalizada!")
     driver.quit()
 
 
-# AP()
+AP()
