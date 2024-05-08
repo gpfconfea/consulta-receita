@@ -3,6 +3,7 @@ from selenium import webdriver
 import pandas as pd
 import time
 
+
 def BA():
     # Configurações do arquivo utilizado
     arquivo = pd.read_csv('app/resources/estados_csv/BA.csv', sep=";")
@@ -15,8 +16,8 @@ def BA():
         'https://crea-ba.sitac.com.br/app/view/sight/externo?form=PesquisarProfissionalEmpresa')
 
     if 'Verificação' in driver.page_source:
-        input("Por favor, resolva o reCAPTCHA manualmente. Pressione Enter quando terminar.")
-        time.sleep(10)
+        input(
+            "Por favor, resolva o reCAPTCHA manualmente. Pressione Enter quando terminar.\n")
 
     # Aguardand resolver o captcha
     '''while 'Verificação' in driver.page_source:
@@ -43,9 +44,8 @@ def BA():
         """ Verifica se está carregando os resultados da busca """
         return driver.execute_script(
             "return document.body.innerText.includes('Carregando')")
-        
 
-    '''def reCaptcha():
+    def reCaptcha():
         """ Verifica se houve erro de reCAPTCHA """
         return driver.execute_script(
             "return document.body.innerText.includes('reCAPTCHA inválido')"
@@ -55,13 +55,17 @@ def BA():
         driver.back()
         time.sleep(0.05)
         driver.forward()
-        time.sleep(0.1)'''
+        while True:
+            try:
+                driver.find_element(By.ID, "CNPJ")
+                break
+            except:
+                pass
 
     def captura_resultado_pesquisa(i):
         """ Captura o resultado da busca e atualiza na planilha """
         while carregando() == True:
-             print('Carregando...')
-             time.sleep(0.2)
+            pass
         if not 'Situação do Registro' in driver.page_source:
             print('Nada localizado')
             colunaSITAC[i] = 'Sem registro'
@@ -94,20 +98,19 @@ def BA():
                 arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
                 arquivo_destino.to_csv(
                     'app/resources/sitac_csv/BA.csv', sep=";", index=False)
-            #resetar_pagina()
+            resetar_pagina()
             driver.find_element(By.ID, "PJ").click()
             campo_cnpj = driver.find_element(By.ID, "CNPJ")
             botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
             pesquisa(i)
 
-            '''while carregando() or reCaptcha():
+            while carregando() or reCaptcha():
+                driver.execute_script(
+                    'document.getElementById("PESQUISAR").removeAttribute("disabled")')
                 if reCaptcha():
-                    print('reCaptcha inválido!')
                     botao_pesquisa.click()
-                    time.sleep(0.2)
                 else:
-                    print('Carregando...')
-                    time.sleep(0.2)'''
+                    pass
 
             captura_resultado_pesquisa(i)
             print('*****************************************\n')
