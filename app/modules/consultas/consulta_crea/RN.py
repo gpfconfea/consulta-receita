@@ -4,50 +4,55 @@ import pandas as pd
 import time
 
 
-def ES():
+def RN():
     # Configurações do arquivo utilizado
-    arquivo = pd.read_csv('app/resources/estados_csv/ES.csv', sep=";")
+    arquivo = pd.read_csv('app/resources/estados_csv/RN.csv', sep=";")
     arquivo_destino = pd.DataFrame()
+    #arquivo_final.to_csv('app/resources/sitac_csv/RN.csv', sep=";")
     # Configurações da página de pesquisa
     driver = webdriver.Edge()
     driver.get(
-        'https://creaes.org.br/ServicosOnline/pgConsultaSituacaoEmpresa.aspx')
+        'https://crea-rn.sitac.com.br/app/view/sight/externo?form=PesquisarProfissionalEmpresa')
 
-    driver.find_element(
-        By.ID, "ctl00_cphLateralEsquerda_ucEsquerda_apAreaPublica_content_ucAreaPublica_imgbtnConsultaSituacaoEmpresa").click()
-    
+    # Aguardand resolver o captcha
+    if 'Verificação' in driver.page_source:
+        input("Por favor, resolva o reCAPTCHA manualmente. Pressione Enter quando terminar.")
+        time.sleep(10) 
+
+    driver.find_element(By.ID, "PJ").click()
+    campo_cnpj = driver.find_element(By.ID, "CNPJ")
+    botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
     colunaCNPJ = list(arquivo['cnpj'])
     colunaSITAC = list(arquivo['sitac_crea'])
     colunaSituacao = list(arquivo['sit_cadastro_crea'])
-    #colunaSITAC = list(arquivo_destino['sitac_crea'])
-    #colunaSituacao = list(arquivo_destino['sit_cadastro_crea'])
-
+    # colunaSITAC = list(arquivo_destino['sitac_crea'])
+    # colunaSituacao = list(arquivo_destino['sit_cadastro_crea'])
 
     def pesquisa(i):
         """ Realiza uma busca clicando no botão de pesquisa """
-        campo_cnpj = driver.find_element(By.ID, "ctl00_cphPrincipal_txtCNPJ")
-        botao_pesquisa = driver.find_element(
-            By.ID, "ctl00_cphPrincipal_imgbtnPesquisarSituacao")
         campo_cnpj.clear()
-        campo_cnpj.send_keys(colunaCNPJ[i])
+        campo_cnpj.send_keys(arquivo['cnpj'][i])
         botao_pesquisa.click()
 
-    def empresa_encontrada():
-        return driver.execute_script("return document.getElementById('ctl00_cphPrincipal_div_resultado').style.display != 'none'")
+    def carregando():
+        """ Verifica se está carregando os resultados da busca """
+        return driver.execute_script(
+            "return document.body.innerText.includes('Carregando')")
 
     def captura_resultado_pesquisa(i):
         """ Captura o resultado da busca e atualiza na planilha """
+        while carregando() == True:
+             print('Carregando...')
+             time.sleep(0.2)
 
-        if not empresa_encontrada():
+        if not 'Situação do Registro' in driver.page_source:
             print('Nada localizado')
             colunaSITAC[i] = 'Sem registro'
             colunaSituacao[i] = 'Sem registro'
         else:
             time.sleep(0.5)
             situacao = driver.find_element(
-                By.ID, "ctl00_cphPrincipal_rptSituacaoEmpresas_ctl00_lblSituacao").text
-
-            situacao = situacao.replace('TIVA', 'TIVO')
+                By.XPATH, "/html/body/div[2]/div/div[4]/div/div[2]/form/div[3]/div[2]/div[1]/div/table/tbody/tr/td[3]").text
             print(situacao)
             colunaSituacao[i] = situacao
             colunaSITAC[i] = 'Registrada no SITAC'
@@ -58,10 +63,12 @@ def ES():
             '\n\n\n\nDeseja pular para o ultimo verificado? (S/N)\n')
         verifica = verifica.upper()
 
+    verifica = verifica == 'S'
+
     # Executar as buscas percorrendo a planilha
     for i in range(len(arquivo)):
 
-        if colunaSITAC[i] != "Registrada no SITAC":
+        if arquivo['sitac_crea'][i] != "Registrada no SITAC":
             if verifica:
                 if colunaSITAC[i] in ("Registrada no SITAC", 'Sem registro'):
                     continue
@@ -71,21 +78,24 @@ def ES():
                     colunaSituacao)
                 arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
                 arquivo_destino.to_csv(
-                    'app/resources/sitac_csv/ES.csv', sep=";", index=False)
+                    'app/resources/sitac_csv/RN.csv', sep=";", index=False)
+            #resetar_pagina()
+            driver.find_element(By.ID, "PJ").click()
+            campo_cnpj = driver.find_element(By.ID, "CNPJ")
+            botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
             pesquisa(i)
-            time.sleep(0.5)
 
             captura_resultado_pesquisa(i)
-            print('*****************************************\n')
+            print('***************************************** \n')
 
     # Gerar novo arquivo com os resultados
     arquivo_destino = arquivo_destino.drop(columns=['cnpj'])
     arquivo = arquivo.drop(columns=['sitac_crea', 'sit_cadastro_crea'])
     arquivo_final = pd.concat([arquivo, arquivo_destino], axis=1)
     arquivo_final.to_csv(
-        'app/resources/sitac_csv/ES.csv', sep=";", index=False)
+        'app/resources/sitac_csv/RN.csv', sep=";", index=False)
     print("\nConsulta Finalizada!")
     driver.quit()
 
 
-ES()
+RN()

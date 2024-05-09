@@ -1,43 +1,55 @@
-from datetime import datetime
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import pandas as pd
 import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
-def PA():
+
+def GO():
     # Configurações do arquivo utilizado
-    arquivo = pd.read_csv('app/resources/estados_csv/PA.csv', sep=";")
+    arquivo = pd.read_csv('app/resources/estados_csv/GO.csv', sep=";")
     arquivo_destino = pd.DataFrame()
-    #arquivo_destino = pd.read_csv('app/resources/sitac_csv/PA.csv', sep=";")
-    global hora
-    hora = datetime.now()
-    hora = hora.strftime("%d/%m/%Y, %H:%M")
     # Configurações da página de pesquisa
     driver = webdriver.Edge()
+
+
     driver.get(
-        'https://crea-pa.sitac.com.br/app/view/sight/externo?form=PesquisarProfissionalEmpresa')
+        'https://api.crea-go.org.br/busca/profissionaiseempresas')
 
     # Aguardand resolver o captcha
-    while 'Verificação' in driver.page_source:
-        time.sleep(2)
-    time.sleep(2)
+    if 'Verificação' in driver.page_source:
+        input("Por favor, resolva o reCAPTCHA manualmente. Pressione Enter quando terminar.")
+        time.sleep(10) 
+    '''driver.find_element(By.CLASS_NAME, "cc-nb-okagree").click
+    time.sleep(0.2)'''
+    #WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, "selecionarTipo")))
+    #driver.find_element(By.CLASS_NAME, "wrapper ng-scope")
+    #driver.find_element(By.CLASS_NAME, "login-box-body")
+    #frame= (By.CLASS_NAME, "login-box-body")
+    driver.find_element(By.ID, "conteudo")
+    #selecao= driver.find_element(By.NAME, "selecionarTipo")
+    selecao= driver.find_element(By.XPATH, "//*[@id='selecionarTipo']")
+    #selecao = driver.find_element(By.CSS_SELECTOR, 'select#selecionarTipo')
+    selecao.click()
+    Select_element= driver.find_element(By.XPATH, "//*[@id='selecionarTipo']/option[2]")
+    #Select.empresa
 
-    driver.find_element(By.ID, "PJ").click()
-    campo_cnpj = driver.find_element(By.ID, "CNPJ")
-    botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
+    campo_cnpj = driver.find_element(By.XPATH, '//*[@id="conteudo"]/main/div[3]/div/div/form/div[3]/input')
+    botao_pesquisa = driver.find_element(By.ID, "botaoBuscar")
     colunaCNPJ = list(arquivo['cnpj'])
     colunaSITAC = list(arquivo['sitac_crea'])
     colunaSituacao = list(arquivo['sit_cadastro_crea'])
-
-    def token():
-        return driver.execute_script(
-            "return document.body.innerText.includes('token')")
+    # colunaSITAC = list(arquivo_destino['sitac_crea'])
+    # colunaSituacao = list(arquivo_destino['sit_cadastro_crea'])
 
     def pesquisa(i):
         """ Realiza uma busca clicando no botão de pesquisa """
         campo_cnpj.clear()
-        campo_cnpj.send_keys(colunaCNPJ[i])
+        campo_cnpj.send_keys(arquivo['cnpj'][i])
+        time.sleep(0.2)
         botao_pesquisa.click()
 
     def carregando():
@@ -63,14 +75,22 @@ def PA():
              print('Carregando...')
              time.sleep(0.2)
 
-        if 'Nada localizado' in driver.page_source:
+        if not 'Lista de empresas' in driver.page_source:
             print('Nada localizado')
             colunaSITAC[i] = 'Sem registro'
             colunaSituacao[i] = 'Sem registro'
         else:
-            situacao = "Situação desconhecida"
-            print(situacao)
-            colunaSituacao[i] = situacao
+            time.sleep(2)
+            '''iframe= driver.find_element(
+                By.XPATH, '//*[@id="conteudo"]/main/div[3]/section/div/div/div/div/div/div/div[1]')
+            driver.switch_to.frame(iframe)'''
+            situacao = driver.find_element(
+                By.XPATH, '//*[@id="conteudo"]/main/div[3]/section/div/div/div/div/div/div/div[1]/table/tbody/tr/td[5]')
+            sit=situacao.text
+            print(sit) 
+            colunaSituacao[i] = sit
+            '''print(situacao) 
+            colunaSituacao[i] = situacao'''
             colunaSITAC[i] = 'Registrada no SITAC'
 
     verifica = ''
@@ -84,7 +104,7 @@ def PA():
     # Executar as buscas percorrendo a planilha
     for i in range(len(arquivo)):
 
-        if colunaSITAC[i] != "Registrada no SITAC":
+        if arquivo['sitac_crea'][i] != "Registrada no SITAC":
             if verifica:
                 if colunaSITAC[i] in ("Registrada no SITAC", 'Sem registro'):
                     continue
@@ -93,68 +113,34 @@ def PA():
                 arquivo_destino['sit_cadastro_crea'] = pd.DataFrame(
                     colunaSituacao)
                 arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
-                arquivo['sit_cadastro_crea'] = pd.DataFrame(
-                    colunaSituacao)
-                arquivo['sitac_crea'] = pd.DataFrame(colunaSITAC)
-
-                arquivo.to_csv(
-                    'app/resources/estados_csv/PA.csv', sep=";", index=False)
                 arquivo_destino.to_csv(
-                    'app/resources/sitac_csv/PA.csv', sep=";", index=False)
-            hora = datetime.now()
-            hora = hora.strftime("%d/%m/%Y, %H:%M")
+                    'app/resources/sitac_csv/GO.csv', sep=";", index=False)
             #resetar_pagina()
-            driver.find_element(By.ID, "PJ").click()
-            campo_cnpj = driver.find_element(By.ID, "CNPJ")
-            botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
+            driver.find_element(By.XPATH, "//*[@id='selecionarTipo']/option[2]").click()
+            campo_cnpj = driver.find_element(By.XPATH, '//*[@id="conteudo"]/main/div[3]/div/div/form/div[3]/input')
+            botao_pesquisa = driver.find_element(By.ID, "botaoBuscar")
             pesquisa(i)
 
-            if token():
-                print('Token inválido!')
-                #resetar_pagina()
-                pesquisa(i)
-
-            count = 0
             '''while carregando() or reCaptcha():
-                if count > 1000:
-                    resetar_pagina()
-                    driver.find_element(By.ID, "PJ").click()
-                    campo_cnpj = driver.find_element(By.ID, "CNPJ")
-                    botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
-                    pesquisa(i)
-                    count = 0
                 if reCaptcha():
                     print('reCaptcha inválido!')
                     botao_pesquisa.click()
                     time.sleep(0.2)
                 else:
                     print('Carregando...')
-                    time.sleep(0.2)
-                count += 1'''
-            print()
+                    time.sleep(0.2)'''
+
             captura_resultado_pesquisa(i)
-            print('*****************************************\n')
+            print('***************************************** \n')
 
     # Gerar novo arquivo com os resultados
-    ''' arquivo_destino['cnpj'] = pd.DataFrame(colunaCNPJ)
-    arquivo_destino['sit_cadastro_crea'] = pd.DataFrame(colunaSituacao)
-    arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
-    arquivo['sit_cadastro_crea'] = pd.DataFrame(
-        colunaSituacao)
-    arquivo['sitac_crea'] = pd.DataFrame(colunaSITAC)
-
-    arquivo.to_csv(
-        'app/resources/estados_csv/PA.csv', sep=";", index=False)
-    arquivo_destino.to_csv(
-        'app/resources/sitac_csv/PA.csv', sep=";", index=False)
-    driver.quit()'''
     arquivo_destino = arquivo_destino.drop(columns=['cnpj'])
     arquivo = arquivo.drop(columns=['sitac_crea', 'sit_cadastro_crea'])
     arquivo_final = pd.concat([arquivo, arquivo_destino], axis=1)
     arquivo_final.to_csv(
-        'app/resources/sitac_csv/PA.csv', sep=";", index=False)
+        'app/resources/sitac_csv/GO.csv', sep=";", index=False)
     print("\nConsulta Finalizada!")
     driver.quit()
 
 
-PA()
+GO()
