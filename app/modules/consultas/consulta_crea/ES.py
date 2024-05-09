@@ -7,21 +7,21 @@ import time
 def ES():
     # Configurações do arquivo utilizado
     arquivo = pd.read_csv('app/resources/estados_csv/ES.csv', sep=";")
-    arquivo_destino = pd.DataFrame()
+    arquivo_destino = pd.read_csv('app/resources/sitac_csv/ES.csv', sep=";")
+
     # Configurações da página de pesquisa
     driver = webdriver.Edge()
     driver.get(
         'https://creaes.org.br/ServicosOnline/pgConsultaSituacaoEmpresa.aspx')
 
+    colunaCNPJ = list(arquivo['cnpj'])
+    # colunaSITAC = list(arquivo['sitac_crea'])
+    # colunaSituacao = list(arquivo['sit_cadastro_crea'])
+    colunaSITAC = list(arquivo_destino['sitac_crea'])
+    colunaSituacao = list(arquivo_destino['sit_cadastro_crea'])
+
     driver.find_element(
         By.ID, "ctl00_cphLateralEsquerda_ucEsquerda_apAreaPublica_content_ucAreaPublica_imgbtnConsultaSituacaoEmpresa").click()
-    
-    colunaCNPJ = list(arquivo['cnpj'])
-    colunaSITAC = list(arquivo['sitac_crea'])
-    colunaSituacao = list(arquivo['sit_cadastro_crea'])
-    #colunaSITAC = list(arquivo_destino['sitac_crea'])
-    #colunaSituacao = list(arquivo_destino['sit_cadastro_crea'])
-
 
     def pesquisa(i):
         """ Realiza uma busca clicando no botão de pesquisa """
@@ -79,12 +79,11 @@ def ES():
             print('*****************************************\n')
 
     # Gerar novo arquivo com os resultados
-    arquivo_destino = arquivo_destino.drop(columns=['cnpj'])
-    arquivo = arquivo.drop(columns=['sitac_crea', 'sit_cadastro_crea'])
-    arquivo_final = pd.concat([arquivo, arquivo_destino], axis=1)
-    arquivo_final.to_csv(
+    arquivo_destino['cnpj'] = pd.DataFrame(colunaCNPJ)
+    arquivo_destino['sit_cadastro_crea'] = pd.DataFrame(colunaSituacao)
+    arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
+    arquivo_destino.to_csv(
         'app/resources/sitac_csv/ES.csv', sep=";", index=False)
-    print("\nConsulta Finalizada!")
     driver.quit()
 
 

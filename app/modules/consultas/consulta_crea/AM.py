@@ -11,7 +11,7 @@ def AM():
     #arquivo_destino.to_csv('app/resources/sitac_csv/AM.csv', sep=";")
 
     # Configurações da página de pesquisa
-    driver = webdriver.Chrome()
+    driver = webdriver.Edge()
     driver.get(
         'https://crea-am.sitac.com.br/app/view/sight/externo?form=PesquisarProfissionalEmpresa')
 

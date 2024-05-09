@@ -8,8 +8,7 @@ import time
 def PB():
     # Configurações do arquivo utilizado
     arquivo = pd.read_csv('app/resources/estados_csv/PB.csv', sep=";")
-    arquivo_destino = pd.DataFrame()
-    #arquivo_destino = pd.read_csv('app/resources/sitac_csv/PB.csv', sep=";")
+    arquivo_destino = pd.read_csv('app/resources/sitac_csv/PB.csv', sep=";")
     global data
     data = datetime.now()
     data = data.strftime("%d/%m/%Y, %H:%M")
@@ -46,7 +45,7 @@ def PB():
         return driver.execute_script(
             "return document.body.innerText.includes('Carregando')")
 
-    '''def reCaptcha():
+    def reCaptcha():
         """ Verifica se houve erro de reCAPTCHA """
         return driver.execute_script(
             "return document.body.innerText.includes('reCAPTCHA inválido')"
@@ -56,13 +55,10 @@ def PB():
         driver.back()
         time.sleep(0.05)
         driver.forward()
-        time.sleep(0.1)'''
+        time.sleep(0.1)
 
     def captura_resultado_pesquisa(i):
         """ Captura o resultado da busca e atualiza na planilha """
-        while carregando() == True:
-             print('Carregando...')
-             time.sleep(0.2)
 
         if 'Nada localizado' in driver.page_source:
             print('Nada localizado')
@@ -113,7 +109,7 @@ def PB():
                     'app/resources/sitac_csv/PB.csv', sep=";", index=False)
             data = datetime.now()
             data = data.strftime("%d/%m/%Y, %H:%M")
-            #resetar_pagina()
+            resetar_pagina()
             driver.find_element(By.ID, "PJ").click()
             campo_cnpj = driver.find_element(By.ID, "CNPJ")
             botao_pesquisa = driver.find_element(By.ID, "PESQUISAR")
@@ -121,11 +117,11 @@ def PB():
 
             if token():
                 print('Token inválido!')
-                #resetar_pagina()
+                resetar_pagina()
                 pesquisa(i)
 
             count = 0
-            '''while carregando() or reCaptcha():
+            while carregando() or reCaptcha():
                 if count > 1000:
                     resetar_pagina()
                     driver.find_element(By.ID, "PJ").click()
@@ -140,13 +136,13 @@ def PB():
                 else:
                     print('Carregando...')
                     time.sleep(0.2)
-                count += 1'''
+                count += 1
             print()
             captura_resultado_pesquisa(i)
             print('*****************************************\n')
 
     # Gerar novo arquivo com os resultados
-    '''arquivo_destino['cnpj'] = pd.DataFrame(colunaCNPJ)
+    arquivo_destino['cnpj'] = pd.DataFrame(colunaCNPJ)
     arquivo_destino['sit_cadastro_crea'] = pd.DataFrame(colunaSituacao)
     arquivo_destino['sitac_crea'] = pd.DataFrame(colunaSITAC)
     arquivo['sit_cadastro_crea'] = pd.DataFrame(
@@ -157,14 +153,6 @@ def PB():
         'app/resources/estados_csv/PB.csv', sep=";", index=False)
     arquivo_destino.to_csv(
         'app/resources/sitac_csv/PB.csv', sep=";", index=False)
-    driver.quit()'''
-
-    arquivo_destino = arquivo_destino.drop(columns=['cnpj'])
-    arquivo = arquivo.drop(columns=['sitac_crea', 'sit_cadastro_crea'])
-    arquivo_final = pd.concat([arquivo, arquivo_destino], axis=1)
-    arquivo_final.to_csv(
-        'app/resources/sitac_csv/PB.csv', sep=";", index=False)
-    print("\nConsulta Finalizada!")
     driver.quit()
 
 

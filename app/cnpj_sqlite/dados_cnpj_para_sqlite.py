@@ -33,7 +33,7 @@ def sqlite():
     # local dos arquivos zipados da Receita
     pasta_compactados = r"app/cnpj_sqlite/dados-publicos-zip"
     # esta pasta deve estar vazia.
-    pasta_saida = ("app/cnpj_sqlite/dados-publicos")
+    pasta_saida = r"app/cnpj_sqlite/dados-publicos"
 
     cam = os.path.join(pasta_saida, 'cnpj.db')
     if os.path.exists(cam):

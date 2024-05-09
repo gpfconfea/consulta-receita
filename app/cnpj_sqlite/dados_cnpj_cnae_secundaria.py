@@ -47,7 +47,7 @@ def cnae_sec():
 
         de = df.explode('cnae_fiscal_secundaria')
         de.to_sql('cnae_secundaria', conn, index=None, if_exists='append', method='multi',
-                  chunksize=1000)  # , dtype=str) #sqlalchemy.sql.sqltypes.TEXT)
+                  chunksize=100000)  # , dtype=str) #sqlalchemy.sql.sqltypes.TEXT)
         print('fim...', time.asctime())
 
     # #%% fazendo em pedaços, dá database locked

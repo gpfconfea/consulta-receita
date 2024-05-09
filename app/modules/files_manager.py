@@ -39,7 +39,6 @@ os arquivos CSV extraídos
 
 
 def addSitacColumns(df):
-    # adiciona colunas relacionadas ao SITAC e SIT (Cadastro) ao DataFrame
     df["sitac_cft"] = ""
     df["sit_cadastro_cft"] = ""
     df["sitac_crea"] = ""
@@ -47,7 +46,6 @@ def addSitacColumns(df):
 
 
 def formatCnpj(df):
-    #formata a coluna 'cnpj' no DataFrame
     def cnpj14(x): return x.zfill(14)
     def formated_cnpj(
         x): return f"{x[:2]}.{x[2:5]}.{x[5:8]}/{x[8:12]}-{x[12:]}"
@@ -56,7 +54,6 @@ def formatCnpj(df):
 
 
 def dataInicioAtividades(df):
-    #formata a coluna 'data_inicio_atividades'
     def date(x): return f"{x[:4]}-{x[4:6]}-{x[6:8]}"
     df.data_inicio_atividades = df.data_inicio_atividades.astype(
         str).apply(date)
@@ -65,21 +62,18 @@ def dataInicioAtividades(df):
 
 
 def formatCnaeFiscal(df):
-    #formata a coluna 'cnae_fiscal'
     def cnae(x): return f"{x[:5]}/{x[5:]}"
     df.cnae_fiscal = df.cnae_fiscal.astype(str).str.zfill(7)
     df.cnae_fiscal = df.cnae_fiscal.apply(cnae)
 
 
 def formatCep(df):
-    #formata a coluna 'cep' no DataFrame
     def cep(x): return f"{x[:5]}-{x[5:]}"
     df.cep = df.cep.astype(str).str.zfill(8)
     df.cep = df.cep.apply(cep)
 
 
 def formatDataFrame(df):
-    #aplica todas as funções de formatação ao DataFrame
     df = convertTypes(df)
     formatCep(df)
     formatCnpj(df)

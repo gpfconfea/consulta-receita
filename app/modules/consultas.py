@@ -34,7 +34,7 @@ def consulta_cft(arquivo_csv):
 
     def reCaptcha():
         """ Verifica se houve erro de reCAPTCHA """
-        return  driver.execute_script(
+        return driver.execute_script(
             "return document.body.innerText.includes('reCAPTCHA inválido')"
         )
 
@@ -44,8 +44,6 @@ def consulta_cft(arquivo_csv):
             print('Nada localizado')
             df['sitac_cft'][i] = 'Sem registro'
             df['sit_cadastro_cft'][i] = 'Sem registro'
-            #df.loc[i, 'sitac_cft'] = 'Sem registro'
-            #df.loc[i, 'sit_cadastro_cft'] = 'Sem registro'
         else:
             situacao = driver.find_element(
                 By.XPATH, "/html/body/div[2]/div/div[4]/div/div[2]/form/div[3]/div[2]/div[1]/div/table/tbody/tr/td[3]").text
